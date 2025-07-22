@@ -23,15 +23,25 @@ function App() {
     setContacts(contacts.filter(contact => contact.id !== id))
   }
 
-  const handleEditContact = (contact: Contact) => {
-    console.log('Editar contacto:', contact)
-  }
+const handleEditContact = (contact: Contact) => {
+  setEditingContact(contact); // Pone el contacto en modo edición
+};
 
-  const handleUpdateContact = (updatedContact: Contact) => {
-    console.log('Actualizar contacto:', updatedContact)
-  }
+const handleUpdateContact = (updatedContact: Contact) => {
+  setContacts(prev =>
+    prev.map(contact =>
+      contact.id === updatedContact.id ? updatedContact : contact
+    )
+  );
+  setEditingContact(null); // Sale del modo edición
+};
 
-  const filteredContacts = contacts
+  const filteredContacts = contacts.filter((contact) =>
+  [contact.nombre, contact.apellido, contact.email, contact.telefono]
+    .some((field) =>
+      field.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+);
 
   return (
     <div className="app">

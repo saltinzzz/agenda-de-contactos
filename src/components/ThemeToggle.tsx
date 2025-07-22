@@ -1,13 +1,26 @@
+import { useEffect, useState } from 'react'
+
 function ThemeToggle() {
-  const handleToggle = () => {
-    console.log('Cambiar tema')
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'light'
+  })
+
+useEffect(() => {
+    document.body.className = '' // Limpiamos clases anteriores
+    document.body.classList.add(theme)
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
+const handleToggle = () => {
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'))
   }
 
-  return (
+return (
     <button onClick={handleToggle} className="theme-toggle">
-      Tema
+    {theme === 'light' ? ' 🌙 ' : ' ☀️ '}
     </button>
   )
 }
+
 
 export default ThemeToggle
