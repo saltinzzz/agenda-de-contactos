@@ -65,6 +65,9 @@ function ContactForm({ onSubmit, editingContact, onUpdate, onCancelEdit }: Conta
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
           placeholder="Ingrese el nombre"
+          required
+          pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{3,}$"
+          title="El nombre debe tener al menos 3 letras y solo letras"
         />
       </div>
       
@@ -76,6 +79,9 @@ function ContactForm({ onSubmit, editingContact, onUpdate, onCancelEdit }: Conta
           value={apellido}
           onChange={(e) => setApellido(e.target.value)}
           placeholder="Ingrese el apellido"
+          required
+          pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{3,}$"
+          title="El apellido debe tener al menos 3 letras y solo letras"
         />
       </div>
 
@@ -98,6 +104,9 @@ function ContactForm({ onSubmit, editingContact, onUpdate, onCancelEdit }: Conta
           value={telefono}
           onChange={(e) => setTelefono(e.target.value)}
           placeholder="Ingrese el teléfono"
+          pattern="^9\d{8}$"
+          maxLength={9}
+          title="El teléfono debe tener 9 dígitos y comenzar con 9"
         />
       </div>
 

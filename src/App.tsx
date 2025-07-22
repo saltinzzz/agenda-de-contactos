@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Contact } from './types/Contact.tsx'
 import ContactForm from './components/ContactForm'
 import ContactList from './components/ContactList'
@@ -6,10 +6,23 @@ import SearchBar from './components/SearchBar'
 import ThemeToggle from './components/ThemeToggle'
 import './App.css'
 
+const defaultContacts: Contact[] = [
+  { id: '1', nombre: 'Juan', apellido: 'Pérez', telefono: '912345678', email: 'juanperez@gmail.com' },
+  { id: '2', nombre: 'Ana', apellido: 'Gómez', telefono: '923456789', email: 'anagomez@gmail.com' }
+]
+
 function App() {
-  const [contacts, setContacts] = useState<Contact[]>([])
+const [contacts, setContacts] = useState<Contact[]>(() => {
+    const stored = localStorage.getItem('contacts')
+    return stored ? JSON.parse(stored) : defaultContacts
+  })
+
   const [searchTerm, setSearchTerm] = useState('')
   const [editingContact, setEditingContact] = useState<Contact | null>(null)
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts))
+  }, [contacts])
 
   const handleAddContact = (contact: Omit<Contact, 'id'>) => {
     const newContact: Contact = {
@@ -20,11 +33,14 @@ function App() {
   }
 
   const handleDeleteContact = (id: string) => {
-    setContacts(contacts.filter(contact => contact.id !== id))
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este contacto?');
+    if (confirmDelete) {
+    setContacts(contacts.filter(contact => contact.id !== id));
   }
+};
 
 const handleEditContact = (contact: Contact) => {
-  setEditingContact(contact); // Pone el contacto en modo edición
+  setEditingContact(contact);
 };
 
 const handleUpdateContact = (updatedContact: Contact) => {
@@ -33,7 +49,7 @@ const handleUpdateContact = (updatedContact: Contact) => {
       contact.id === updatedContact.id ? updatedContact : contact
     )
   );
-  setEditingContact(null); // Sale del modo edición
+  setEditingContact(null);
 };
 
   const filteredContacts = contacts.filter((contact) =>
@@ -74,8 +90,12 @@ const handleUpdateContact = (updatedContact: Contact) => {
           />
         </section>
       </main>
+       <footer className="app-footer">
+      <p>© 2025 Agenda de Contactos - Stalin Gonzales</p>
+        </footer>
     </div>
   )
+  
 }
 
 export default App

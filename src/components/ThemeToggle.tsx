@@ -6,7 +6,7 @@ function ThemeToggle() {
   })
 
 useEffect(() => {
-    document.body.className = '' // Limpiamos clases anteriores
+    document.body.className = ''
     document.body.classList.add(theme)
     localStorage.setItem('theme', theme)
   }, [theme])
@@ -21,6 +21,5 @@ return (
     </button>
   )
 }
-
 
 export default ThemeToggle
